@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Login Admin</title></head>
+<body style="text-align:center;padding-top:100px;">
+  <h2>Login Penyihir Admin</h2>
+  <input type="password" id="pass" placeholder="Kata Sandi Rahasia" />
+  <br/><br/>
+  <button onclick="masuk()">Masuk</button>
+  <script>
+    function masuk() {
+      const pass = document.getElementById('pass').value;
+      if (pass === 'hikariseal2025') {
+        sessionStorage.setItem("adminAktif", "true");
+        window.location.href = "dashboard.html";
+      } else {
+        alert("❌ Sandi salah!");
+      }
+    }
+  </script>
+</body>
+</html>
