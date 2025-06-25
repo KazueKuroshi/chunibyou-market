@@ -4,37 +4,44 @@
   <meta charset="UTF-8" />
   <title>Chunibyou Market</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="firebaseConfig.js"></script>
 </head>
 <body>
+
+  <!-- 🌌 Logo Animasi -->
   <header>
     <h1 class="logo">✨ Chunibyou Market ✨</h1>
   </header>
 
+  <!-- 🌓 Toggle Mode -->
   <button id="toggleMode">🌙 Ganti Mode</button>
-<canvas id="bintangCanvas"></canvas>
+  <canvas id="bintangCanvas"></canvas>
 
+  <!-- 🧺 Daftar Produk -->
   <div id="produk-container"></div>
 
+  <!-- 🛍️ Keranjang Belanja -->
   <div id="keranjang">
     <h2>Keranjang Belanja</h2>
     <ul id="list-keranjang"></ul>
     <p>Total: <span id="total">Rp0</span></p>
   </div>
 
+  <!-- 🧾 Formulir Checkout -->
   <div id="checkout">
-    <h3>Formulir Checkout</h3>
-    <input type="text" id="nama" placeholder="Nama" />
-    <input type="email" id="email" placeholder="Email" />
-    <button onclick="checkout()">🧾 Checkout via WA</button>
+    <h3>Checkout via WhatsApp</h3>
+    <input type="text" id="nama" placeholder="Nama Penyihir" />
+    <input type="email" id="email" placeholder="Email Dimensi" />
+    <button onclick="checkout()">Kirim Pesanan</button>
     <div id="notifikasi"></div>
   </div>
 
-  <!-- Firebase + Config -->
-  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
-  <script src="firebaseConfig.js"></script>
-
-  <!-- Script toko -->
+  <!-- ⚙️ Script Logic -->
   <script src="script.js"></script>
+
 </body>
 </html>
