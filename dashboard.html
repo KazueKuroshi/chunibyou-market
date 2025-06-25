@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin</title>
+</head>
+<body>
+  <h1>📋 Dashboard Admin Chunibyou</h1>
+
+  <h2>Tambah Produk</h2>
+  <input id="namaProduk" placeholder="Nama" />
+  <textarea id="deskripsiProduk" placeholder="Deskripsi"></textarea>
+  <input id="hargaProduk" type="number" placeholder="Harga" />
+  <button onclick="simpanProduk()">Simpan</button>
+
+  <ul id="listProduk"></ul>
+
+  <h2>Penjualan</h2>
+  <canvas id="grafikPenjualan" height="200"></canvas>
+  <button onclick="unduhCSV()">📥 Unduh Laporan CSV</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="firebaseConfig.js"></script>
+  <script>
+    if (sessionStorage.getItem("adminAktif") !== "true") {
+      alert("Kamu tidak punya izin!");
+      window.location.href = "login.html";
+    }
+
+    function simpanProduk() {
+      const nama = document.getElementById('namaProduk').value.trim();
+      const deskripsi = document.getElementById('deskripsiProduk').value.trim();
+      const harga = parseInt(document.getElementById('hargaProduk').value);
+      if (!nama || !deskripsi || isNaN(harga)) return;
+
+      const id = db.ref().child('produk').push().key;
+      db.ref('produk/' + id).set({ nama, deskripsi, harga });
+
+      document.getElementById('namaProduk').value = '';
+      document.getElementById('deskripsiProduk').value = '';
+      document.getElementById('hargaProduk').value = '';
+    }
+
+    db.ref('produk').on('value', snapshot => {
+      const data = snapshot.val() || {};
+      const list = document.getElementById('listProduk');
+      list.innerHTML = '';
+      for (let id in data) {
+        const p = data[id];
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${p.nama}</strong> - Rp${p.harga.toLocaleString()}<br/>
+        ${p.deskripsi}<br/>
+        <button onclick="hapusProduk('${id}')">🗑️ Hapus</button>`;
+        list.appendChild(li);
+      }
+    });
+
+    function hapusProduk(id) {
+      if (confirm("Hapus produk ini?")) {
+        db.ref('produk/' + id).remove();
+      }
+    }
+
+    const ctx = document.getElementById('grafikPenjualan').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: [], datasets: [{ label: 'Penjualan', data: [], backgroundColor: '#cc33ff' }] },
+      options: { scales: { y: { beginAtZero: true } } }
+    });
+
+    db.ref('penjualan').on('value', snap => {
+      const data = snap.val() || {};
+      chart.data.labels = Object.keys(data);
+      chart.data.datasets[0].data = Object.values(data);
+      chart.update();
+    });
+
+    function unduhCSV() {
+      db.ref('pesanan').once('value').then(snapshot => {
+        const data = snapshot.val();
+        let csv = "Nama,Email,Produk,Total,Waktu\n";
+        for (let key in data) {
+          const p = data[key];
+          const daftar = p.isiKeranjang.map(k => k.nama).join(" | ");
+          csv += `${p.pemesan.nama},${p.pemesan.email},"${daftar}",${p.total},${p.waktu}\n`;
+        }
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = "laporan_pesanan.csv";
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
