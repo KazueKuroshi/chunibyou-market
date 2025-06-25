@@ -1,6 +1,6 @@
 let keranjang = [];
 
-// Ambil produk dari Firebase dan tampilkan
+// Ambil produk dari Firebase Realtime Database
 db.ref('produk').on('value', snapshot => {
   const data = snapshot.val() || {};
   const produkArray = Object.entries(data).map(([id, p]) => ({ ...p, id }));
@@ -10,7 +10,7 @@ db.ref('produk').on('value', snapshot => {
   updateKeranjang();
 });
 
-// Tampilkan produk
+// Tampilkan produk di halaman
 function tampilkanProduk(data) {
   const container = document.getElementById('produk-container');
   container.innerHTML = '';
@@ -27,7 +27,7 @@ function tampilkanProduk(data) {
   });
 }
 
-// Keranjang
+// Tambahkan ke keranjang
 function tambahKeKeranjang(index) {
   const item = window.produkList[index];
   keranjang.push(item);
@@ -49,16 +49,16 @@ function updateKeranjang() {
   totalEl.textContent = 'Rp' + total.toLocaleString();
 }
 
+// Simpan di localStorage
 function simpanKeranjang() {
   localStorage.setItem('keranjangHikari', JSON.stringify(keranjang));
 }
-
 function ambilKeranjang() {
   const data = localStorage.getItem('keranjangHikari');
   if (data) keranjang = JSON.parse(data);
 }
 
-// Checkout + WA + Firebase + Statistik
+// Checkout
 function checkout() {
   const nama = document.getElementById('nama').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -100,9 +100,7 @@ function checkout() {
   document.getElementById('email').value = '';
 }
 
-//
-// 🌌 Mode Gelap + Latar Bintang 🌠
-//
+// 🌌 Night Mode + Bintang
 document.getElementById('toggleMode').addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
   const isDark = document.body.classList.contains('dark-mode');
