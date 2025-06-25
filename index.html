@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chunibyou Market</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Chunibyou Market ✨ Portal Belanja Penyihir Otaku</h1>
+  </header>
+
+  <section id="produk-container"></section>
+
+  <div id="keranjang">
+    <h2>Keranjang Belanja 🛍️</h2>
+    <ul id="list-keranjang"></ul>
+    <p><strong>Total: <span id="total">Rp0</span></strong></p>
+  </div>
+
+  <div id="checkout">
+    <h2>Ritual Pemanggilan Pesanan 🧾</h2>
+    <input type="text" id="nama" placeholder="Nama Penyihir Pemesan" required />
+    <input type="email" id="email" placeholder="Email Dimensi" required />
+    <a id="tombol-wa" onclick="checkout()">🔮 Checkout via WhatsApp</a>
+    <div id="notifikasi"></div>
+    <canvas id="partikel"></canvas>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
