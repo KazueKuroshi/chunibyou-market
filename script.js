@@ -1,5 +1,6 @@
 let keranjang = [];
 
+// Ambil data produk secara realtime dari Firebase
 db.ref('produk').on('value', snapshot => {
   const data = snapshot.val() || {};
   const produkArray = Object.entries(data).map(([id, p]) => ({ ...p, id }));
@@ -9,6 +10,7 @@ db.ref('produk').on('value', snapshot => {
   updateKeranjang();
 });
 
+// Tampilkan produk ke halaman
 function tampilkanProduk(data) {
   const container = document.getElementById('produk-container');
   container.innerHTML = '';
@@ -25,6 +27,7 @@ function tampilkanProduk(data) {
   });
 }
 
+// Tambahkan produk ke keranjang
 function tambahKeKeranjang(index) {
   const item = window.produkList[index];
   keranjang.push(item);
@@ -32,6 +35,7 @@ function tambahKeKeranjang(index) {
   updateKeranjang();
 }
 
+// Perbarui tampilan keranjang dan total
 function updateKeranjang() {
   const list = document.getElementById('list-keranjang');
   const totalEl = document.getElementById('total');
@@ -46,14 +50,18 @@ function updateKeranjang() {
   totalEl.textContent = 'Rp' + total.toLocaleString();
 }
 
+// Simpan keranjang ke localStorage
 function simpanKeranjang() {
   localStorage.setItem('keranjangHikari', JSON.stringify(keranjang));
 }
+
+// Ambil keranjang dari localStorage
 function ambilKeranjang() {
   const data = localStorage.getItem('keranjangHikari');
   if (data) keranjang = JSON.parse(data);
 }
 
+// Proses checkout dan kirim ke WhatsApp + simpan ke Firebase
 function checkout() {
   const nama = document.getElementById('nama').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -74,6 +82,7 @@ function checkout() {
   const orderID = 'order_' + Date.now();
   db.ref('pesanan/' + orderID).set(pesanan);
 
+  // Tambahkan statistik penjualan
   keranjang.forEach(item => {
     const itemRef = db.ref('penjualan/' + item.nama);
     itemRef.get().then(snapshot => {
@@ -82,14 +91,16 @@ function checkout() {
     });
   });
 
+  // Kirim ke WhatsApp
   const pesan = keranjang.map((item, i) => `${i + 1}. ${item.nama} - Rp${item.harga.toLocaleString()}`).join('\n');
-  const teksWA = `🧾 *Pesanan dari Chunibyou Market*\n👤 ${nama}\n📧 ${email}\n\n${pesan}\n\nTotal: Rp${pesanan.total.toLocaleString()}`;
+  const teksWA = `🧾 *Pesanan dari Chunibyou Market*\n👤 ${nama}\n📧 ${email}\n\n${pesan}\n\n💰 Total: Rp${pesanan.total.toLocaleString()}`;
   window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(teksWA)}`, '_blank');
 
+  // Reset form dan keranjang
   keranjang = [];
   simpanKeranjang();
   updateKeranjang();
-  notif.textContent = '✅ Pesanan dikirim ke WhatsApp!';
+  notif.textContent = '✅ Pesananmu berhasil dikirim ke WhatsApp!';
   document.getElementById('nama').value = '';
   document.getElementById('email').value = '';
 }
