@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "ISI_API_KEY",
-  authDomain: "NAMA_PROJECT.firebaseapp.com",
-  databaseURL: "https://NAMA_PROJECT.firebaseio.com",
-  projectId: "NAMA_PROJECT",
-  storageBucket: "NAMA_PROJECT.appspot.com",
-  messagingSenderId: "xxxx",
-  appId: "APP_ID"
+  apiKey: "AIzaSyCFj7fQ6eXEzK88QRGE2q74gRjQq8EGiJ8",
+  authDomain: "chunibyou-market.firebaseapp.com",
+  databaseURL: "https://chunibyou-market-default-rtdb.firebaseio.com",
+  projectId: "chunibyou-market",
+  storageBucket: "chunibyou-market.firebasestorage.app",
+  messagingSenderId: "250359580310",
+  appId: "1:250359580310:web:3984eddab05c5bad5fe4b7"
 };
 
 firebase.initializeApp(firebaseConfig);
