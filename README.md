@@ -1,47 +1,77 @@
-# ✨ Chunibyou Market
+# ✨ Chunibyou Market ✨
 
-**Chunibyou Market** adalah toko web otaku bertema sihir gelap elegan—dibuat untuk komunitas penggemar light novel dan anime! Fitur-fitur sihirnya mencakup:
+Portal jual beli otaku bergaya chunibyou, dengan kekuatan Firebase dan nuansa sihir bercahaya. 🌌🛍️
 
-- 🔮 Keranjang belanja dinamis
-- 📦 Checkout otomatis via WhatsApp
-- 💾 Penyimpanan data realtime menggunakan Firebase Realtime Database
-- 🧙‍♀️ Dashboard admin untuk manajemen produk
-- 📊 Statistik penjualan dengan Chart.js
-- 🌌 Night mode dengan latar bintang yang hidup
-- 🛡️ Sistem login admin berbasis session
+## 🚀 Fitur Unggulan
 
-## 🚀 Teknologi yang Digunakan
+- 🧺 Belanja produk dari Firebase Realtime Database
+- 📦 Checkout langsung via WhatsApp
+- 🔐 Login admin dengan verifikasi email (Firebase Auth)
+- 📈 Dashboard admin: tambah produk, hapus, grafik penjualan (Chart.js), ekspor CSV
+- 🌙 Toggle dark mode dengan latar bintang animasi
+- 🎨 Desain responsif + logo animasi + segel "光" sebagai favicon
 
-- HTML, CSS, JavaScript (vanilla)
-- Firebase Realtime Database
-- Chart.js
-- WhatsApp API Link
+## 🧰 Struktur Proyek
 
-## 🛠️ Instalasi & Setup
-
-1. Clone repo ini atau unduh sebagai ZIP.
-2. Edit `firebaseConfig.js` dengan kredensial Firebase-mu.
-3. Buka `index.html` untuk toko, `login.html` untuk masuk ke dashboard.
-4. Untuk admin: login dengan kata sandi (default: `hikariseal2025`).
-5. Untuk deploy: bisa menggunakan GitHub Pages, Netlify, atau Firebase Hosting.
-
-## 🧾 Struktur Folder
-
-`
-📁 chunibyou-market/
+```
+chunibyou-market/
 ├── index.html
-├── dashboard.html
 ├── login.html
-├── script.js
+├── dashboard.html
 ├── style.css
+├── script.js
 ├── firebaseConfig.js
 ├── favicon.ico
+├── magic-loading.gif (opsional)
 └── README.md
-`
-## 📷 Preview
+```
+## 🔧 Setup
 
-![Screenshot](preview.png) <!-- Ganti atau hapus jika tidak punya gambar -->
+1. Buat proyek di [Firebase Console](https://console.firebase.google.com)
+2. Aktifkan:
+   - Realtime Database (Start in test mode)
+   - Authentication (Email/Password)
+3. Salin konfigurasi ke `firebaseConfig.js`
+4. Ubah `rules` database:
 
-## 📜 Lisensi
+```json
+{
+  "rules": {
+    "produk": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "pesanan": {
+      ".read": false,
+      ".write": true
+    },
+    "penjualan": {
+      ".read": false,
+      ".write": true
+    }
+  }
+}
+```
 
-MIT License © 2025 Hikari Devs — Dibangun oleh penyihir untuk penyihir fandom.
+
+## 📱 Checkout WhatsApp
+
+Edit nomor WA di script.js:
+
+```javascript
+window.open(https://wa.me/6281234567890?text=...)
+```
+
+Ganti dengan nomor admin tokomu.
+
+## 🎯 TODO Fitur Tambahan (Opsional)
+
+- [ ] Multi admin dengan custom claims Firebase
+- [ ] Filter kategori produk
+- [ ] Notifikasi pesanan baru (real-time)
+- [ ] Upload gambar produk (Firebase Storage)
+
+---
+
+> Dikembangkan dengan 💜 oleh komunitas Hikari Bunko  
+> Theme: Otaku ✨ Sihir ✨ Kesungguhan level 99
