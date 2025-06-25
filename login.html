@@ -1,20 +1,84 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Login Admin</title></head>
-<body style="text-align:center;padding-top:100px;">
-  <h2>Login Penyihir Admin</h2>
-  <input type="password" id="pass" placeholder="Kata Sandi Rahasia" />
-  <br/><br/>
-  <button onclick="masuk()">Masuk</button>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Admin | Chunibyou Market</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Firebase Core -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="firebaseConfig.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #1b0033, #390066);
+      color: #fff;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    input {
+      padding: 0.6rem;
+      margin: 0.5rem;
+      border-radius: 6px;
+      width: 250px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      background: #33cc99;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    #loading {
+      display: none;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔐 Login Penyihir Admin</h2>
+  
+  <input type="email" id="email" placeholder="Email Admin" /><br />
+  <input type="password" id="password" placeholder="Password Rahasia" /><br />
+  <button onclick="masuk()">Masuk ke Dimensi Dashboard</button>
+
+  <div id="loading">
+    <p>🔄 Membuka Gerbang... Silakan tunggu...</p>
+  </div>
+
   <script>
     function masuk() {
-      const pass = document.getElementById('pass').value;
-      if (pass === 'hikariseal2025') {
-        sessionStorage.setItem("adminAktif", "true");
-        window.location.href = "dashboard.html";
-      } else {
-        alert("❌ Sandi salah!");
-      }
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const loading = document.getElementById('loading');
+      loading.style.display = 'block';
+
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(({ user }) => {
+          if (!user.emailVerified) {
+            user.sendEmailVerification().then(() => {
+              alert("📩 Verifikasi telah dikirim ke email-mu. Silakan cek dan login kembali setelah mengonfirmasi.");
+              loading.style.display = 'none';
+              firebase.auth().signOut();
+            });
+          } else {
+            sessionStorage.setItem("adminAktif", "true");
+            window.location.href = "dashboard.html";
+          }
+        })
+        .catch(err => {
+          loading.style.display = 'none';
+          alert("❌ Login gagal: " + err.message);
+        });
     }
   </script>
 </body>
