@@ -2,32 +2,36 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chunibyou Market</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Chunibyou Market ✨ Portal Belanja Penyihir Otaku</h1>
+    <h1>🪄 Chunibyou Market</h1>
   </header>
 
-  <section id="produk-container"></section>
+  <div id="produk-container"></div>
 
   <div id="keranjang">
-    <h2>Keranjang Belanja 🛍️</h2>
+    <h2>Keranjang Belanja</h2>
     <ul id="list-keranjang"></ul>
-    <p><strong>Total: <span id="total">Rp0</span></strong></p>
+    <p>Total: <span id="total">Rp0</span></p>
   </div>
 
   <div id="checkout">
-    <h2>Ritual Pemanggilan Pesanan 🧾</h2>
-    <input type="text" id="nama" placeholder="Nama Penyihir Pemesan" required />
-    <input type="email" id="email" placeholder="Email Dimensi" required />
-    <a id="tombol-wa" onclick="checkout()">🔮 Checkout via WhatsApp</a>
+    <h3>Formulir Checkout</h3>
+    <input type="text" id="nama" placeholder="Nama" />
+    <input type="email" id="email" placeholder="Email" />
+    <button onclick="checkout()">🧾 Checkout via WA</button>
     <div id="notifikasi"></div>
-    <canvas id="partikel"></canvas>
   </div>
 
+  <!-- Firebase + Config -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="firebaseConfig.js"></script>
+
+  <!-- Script toko -->
   <script src="script.js"></script>
 </body>
 </html>
