@@ -27,7 +27,7 @@ header {
   to { text-shadow: 0 0 10px #ffffff, 0 0 20px #ff00ff, 0 0 30px #cc00cc; }
 }
 
-/* ==== Tombol Mode ==== */
+/* ==== Tombol Dark Mode ==== */
 #toggleMode {
   position: fixed;
   top: 12px;
@@ -43,7 +43,7 @@ header {
   box-shadow: 0 0 10px #fff;
 }
 
-/* ==== Latar Bintang ==== */
+/* ==== Bintang Mode Malam ==== */
 #bintangCanvas {
   position: fixed;
   top: 0;
@@ -55,7 +55,7 @@ header {
   z-index: 0;
 }
 
-/* ==== Kontainer Produk ==== */
+/* ==== Daftar Produk ==== */
 #produk-container {
   display: flex;
   flex-wrap: wrap;
@@ -156,25 +156,7 @@ body.dark-mode #checkout {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* ==== Grafik Penjualan ==== */
-canvas#grafikPenjualan {
-  margin-top: 1rem;
-  background: #fff;
-  border-radius: 10px;
-  max-width: 90%;
-}
-
-/* ==== Dashboard List Produk ==== */
-#listProduk li {
-  background: rgba(255,255,255,0.1);
-  padding: 1rem;
-  margin: 1rem auto;
-  max-width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #999;
-}
-
-/* ==== Media Queries ==== */
+/* ==== Responsif ==== */
 @media (max-width: 500px) {
   .logo {
     font-size: 1.5rem;
