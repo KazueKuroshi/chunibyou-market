@@ -18,7 +18,6 @@
       text-align: center;
       padding-top: 100px;
     }
-
     input {
       padding: 0.6rem;
       margin: 0.5rem;
@@ -27,7 +26,6 @@
       border: none;
       font-size: 1rem;
     }
-
     button {
       padding: 0.6rem 1.2rem;
       background: #33cc99;
@@ -37,7 +35,6 @@
       cursor: pointer;
       font-size: 1rem;
     }
-
     #loading {
       display: none;
       margin-top: 1rem;
@@ -72,7 +69,7 @@
             });
           } else {
             sessionStorage.setItem("adminAktif", "true");
-            window.location.href = "dashboard.html";
+            window.location.href = "/dashboard.html";
           }
         })
         .catch(err => {
