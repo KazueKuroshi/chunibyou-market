@@ -1,6 +1,6 @@
 let keranjang = [];
 
-// Ambil data produk secara realtime dari Firebase
+// Ambil produk dari Firebase dan tampilkan
 db.ref('produk').on('value', snapshot => {
   const data = snapshot.val() || {};
   const produkArray = Object.entries(data).map(([id, p]) => ({ ...p, id }));
@@ -10,7 +10,7 @@ db.ref('produk').on('value', snapshot => {
   updateKeranjang();
 });
 
-// Tampilkan produk ke halaman
+// Tampilkan produk
 function tampilkanProduk(data) {
   const container = document.getElementById('produk-container');
   container.innerHTML = '';
@@ -27,7 +27,7 @@ function tampilkanProduk(data) {
   });
 }
 
-// Tambahkan produk ke keranjang
+// Keranjang
 function tambahKeKeranjang(index) {
   const item = window.produkList[index];
   keranjang.push(item);
@@ -35,7 +35,6 @@ function tambahKeKeranjang(index) {
   updateKeranjang();
 }
 
-// Perbarui tampilan keranjang dan total
 function updateKeranjang() {
   const list = document.getElementById('list-keranjang');
   const totalEl = document.getElementById('total');
@@ -50,18 +49,16 @@ function updateKeranjang() {
   totalEl.textContent = 'Rp' + total.toLocaleString();
 }
 
-// Simpan keranjang ke localStorage
 function simpanKeranjang() {
   localStorage.setItem('keranjangHikari', JSON.stringify(keranjang));
 }
 
-// Ambil keranjang dari localStorage
 function ambilKeranjang() {
   const data = localStorage.getItem('keranjangHikari');
   if (data) keranjang = JSON.parse(data);
 }
 
-// Proses checkout dan kirim ke WhatsApp + simpan ke Firebase
+// Checkout + WA + Firebase + Statistik
 function checkout() {
   const nama = document.getElementById('nama').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -82,12 +79,11 @@ function checkout() {
   const orderID = 'order_' + Date.now();
   db.ref('pesanan/' + orderID).set(pesanan);
 
-  // Tambahkan statistik penjualan
   keranjang.forEach(item => {
-    const itemRef = db.ref('penjualan/' + item.nama);
-    itemRef.get().then(snapshot => {
-      const jumlah = snapshot.val() || 0;
-      itemRef.set(jumlah + 1);
+    const statRef = db.ref('penjualan/' + item.nama);
+    statRef.get().then(snap => {
+      const jumlah = snap.val() || 0;
+      statRef.set(jumlah + 1);
     });
   });
 
@@ -96,11 +92,59 @@ function checkout() {
   const teksWA = `🧾 *Pesanan dari Chunibyou Market*\n👤 ${nama}\n📧 ${email}\n\n${pesan}\n\n💰 Total: Rp${pesanan.total.toLocaleString()}`;
   window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(teksWA)}`, '_blank');
 
-  // Reset form dan keranjang
   keranjang = [];
   simpanKeranjang();
   updateKeranjang();
-  notif.textContent = '✅ Pesananmu berhasil dikirim ke WhatsApp!';
+  notif.textContent = '✅ Pesanan berhasil dikirim ke WhatsApp!';
   document.getElementById('nama').value = '';
   document.getElementById('email').value = '';
+}
+
+//
+// 🌌 Mode Gelap + Latar Bintang 🌠
+//
+document.getElementById('toggleMode').addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  localStorage.setItem('modeGelap', isDark ? 'aktif' : 'mati');
+
+  const canvas = document.getElementById('bintangCanvas');
+  canvas.style.display = isDark ? 'block' : 'none';
+  if (isDark) bintangkan();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const mode = localStorage.getItem('modeGelap');
+  if (mode === 'aktif') {
+    document.body.classList.add('dark-mode');
+    const canvas = document.getElementById('bintangCanvas');
+    canvas.style.display = 'block';
+    bintangkan();
+  }
+});
+
+function bintangkan() {
+  const canvas = document.getElementById('bintangCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const bintang = Array.from({ length: 100 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.5
+  }));
+
+  function animasiBintang() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    bintang.forEach(b => {
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    requestAnimationFrame(animasiBintang);
+  }
+
+  animasiBintang();
 }
