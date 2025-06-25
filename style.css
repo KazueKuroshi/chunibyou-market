@@ -1,0 +1,126 @@
+body {
+  font-family: 'Cinzel Decorative', cursive;
+  background: linear-gradient(to bottom right, #1a1a40, #3a007d);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #9d00ff;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 15px #fff;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff00ff;
+}
+
+/* Produk */
+.produk {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid #ffccff;
+  border-radius: 10px;
+  margin: 1.5rem auto;
+  padding: 1rem;
+  max-width: 320px;
+  text-align: center;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 0 10px #cc33ff55;
+}
+
+/* Keranjang */
+#keranjang {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed #ff6efb;
+  padding: 1rem;
+  margin: 2rem auto;
+  max-width: 400px;
+  border-radius: 12px;
+  color: #ffccff;
+  box-shadow: 0 0 20px #ff00ffaa;
+}
+#keranjang h2 {
+  font-family: 'Cinzel Decorative', cursive;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff99ff;
+}
+#list-keranjang li {
+  margin-bottom: 0.5rem;
+  list-style: '🧧 ';
+}
+
+/* Checkout Ritual Form */
+#checkout {
+  background: radial-gradient(circle at center, #2a003f, #000);
+  border: 3px double #ff99ff;
+  padding: 2rem;
+  margin: 3rem auto;
+  max-width: 450px;
+  border-radius: 16px;
+  color: #fcefff;
+  text-shadow: 0 0 5px #fff;
+  box-shadow: 0 0 25px #8800ff99, inset 0 0 15px #aa00ff66;
+  font-family: 'Cinzel Decorative', cursive;
+  position: relative;
+  overflow: hidden;
+}
+#checkout::before {
+  content: "☽☆☾";
+  font-size: 80px;
+  position: absolute;
+  top: -30px;
+  right: -10px;
+  opacity: 0.1;
+  transform: rotate(-20deg);
+}
+#checkout input {
+  width: 90%;
+  margin-bottom: 1rem;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #ffccff;
+  background: #1a002b;
+  color: #fff;
+}
+#checkout input::placeholder {
+  color: #cc99ff;
+}
+
+/* Tombol WhatsApp */
+#tombol-wa {
+  display: inline-block;
+  background: #25d366;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 0 10px #25d366, 0 0 20px #25d366aa;
+  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+#tombol-wa:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ffffff, 0 0 25px #25d366, 0 0 35px #25d366;
+}
+
+#notifikasi {
+  margin-top: 1rem;
+  color: #ffccff;
+  font-style: italic;
+  text-shadow: 0 0 3px #fff;
+}
+
+/* Efek Partikel */
+canvas#partikel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
