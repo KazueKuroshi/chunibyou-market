@@ -1,77 +1,86 @@
-# ✨ Chunibyou Market ✨
+# ✨ Chunibyou Market
 
-Portal jual beli otaku bergaya chunibyou, dengan kekuatan Firebase dan nuansa sihir bercahaya. 🌌🛍️
+Chunibyou Market adalah toko virtual bergaya otaku yang memadukan tema sihir, estetika anime, dan kekuatan Firebase—dilengkapi dengan sistem multi-admin, checkout via WhatsApp, statistik penjualan, dan progresif sebagai PWA (Progressive Web App).
 
-## 🚀 Fitur Unggulan
+## 🚀 Fitur Utama
 
-- 🧺 Belanja produk dari Firebase Realtime Database
-- 📦 Checkout langsung via WhatsApp
-- 🔐 Login admin dengan verifikasi email (Firebase Auth)
-- 📈 Dashboard admin: tambah produk, hapus, grafik penjualan (Chart.js), ekspor CSV
-- 🌙 Toggle dark mode dengan latar bintang animasi
-- 🎨 Desain responsif + logo animasi + segel "光" sebagai favicon
-
-## 🧰 Struktur Proyek
-
-```
-chunibyou-market/
-├── index.html
-├── login.html
-├── dashboard.html
-├── style.css
-├── script.js
-├── firebaseConfig.js
-├── favicon.ico
-├── magic-loading.gif (opsional)
-└── README.md
-```
-## 🔧 Setup
-
-1. Buat proyek di [Firebase Console](https://console.firebase.google.com)
-2. Aktifkan:
-   - Realtime Database (Start in test mode)
-   - Authentication (Email/Password)
-3. Salin konfigurasi ke `firebaseConfig.js`
-4. Ubah `rules` database:
-
-```json
-{
-  "rules": {
-    "produk": {
-      ".read": true,
-      ".write": "auth != null"
-    },
-    "pesanan": {
-      ".read": false,
-      ".write": true
-    },
-    "penjualan": {
-      ".read": false,
-      ".write": true
-    }
-  }
-}
-```
-
-
-## 📱 Checkout WhatsApp
-
-Edit nomor WA di script.js:
-
-```javascript
-window.open(https://wa.me/6281234567890?text=...)
-```
-
-Ganti dengan nomor admin tokomu.
-
-## 🎯 TODO Fitur Tambahan (Opsional)
-
-- [ ] Multi admin dengan custom claims Firebase
-- [ ] Filter kategori produk
-- [ ] Notifikasi pesanan baru (real-time)
-- [ ] Upload gambar produk (Firebase Storage)
+- 🌟 Antarmuka toko produk interaktif dengan animasi dan mode malam berbintang
+- 🧺 Keranjang belanja dinamis & Checkout melalui WhatsApp
+- 🔐 Autentikasi admin (dengan verifikasi email)
+- 🧙‍♀️ Dashboard admin multi-role: `superadmin`, `moderator`, `viewer`
+- 📈 Grafik penjualan real-time (Chart.js)
+- 📥 Ekspor data transaksi ke CSV
+- 🧾 Pendaftaran admin baru dengan penyimpanan ke Firestore
+- 🎖️ Panel SuperAdmin untuk kelola peran dan menghapus admin
+- 📦 PWA-ready dengan splash screen, ikon, dan offline mode (service worker)
 
 ---
 
-> Dikembangkan dengan 💜 oleh komunitas Hikari Bunko  
-> Theme: Otaku ✨ Sihir ✨ Kesungguhan level 99
+## 🗂️ Struktur Folder
+
+```
+chunibyou-market/
+├─ index.html             → Halaman utama toko
+├─ login.html             → Login admin
+├─ register.html          → Daftar admin baru
+├─ dashboard.html         → Dashboard admin dengan deteksi peran
+├─ adminPanel.html        → Panel SuperAdmin untuk role admin
+├─ splash.html            → Layar pembuka animasi
+├─ 404.html               → Halaman tidak ditemukan bertema otaku
+├─ style.css              → Gaya visual global
+├─ script.js              → Logika produk, keranjang, dan efek animasi
+├─ firebaseConfig.js      → Konfigurasi Firebase
+├─ manifest.json          → Deskripsi PWA
+├─ service-worker.js      → Cache & offline
+├─ database.rules.json    → Rules Realtime Database
+├─ firestore.rules        → Rules Firestore
+├─ firebase.json          → Konfigurasi deploy Firebase Hosting
+├─ .firebaserc            → Profil Firebase CLI
+├─ favicon.svg            → Ikon segel "光"
+```
+
+---
+
+## 🔧 Instalasi & Deploy
+
+1. Install Firebase CLI
+   ```bash
+   npm install -g firebase-tools
+   firebase login
+   ```
+
+   
+---
+
+## 2. Masuk ke folder proyek
+   ```bash
+   cd chunibyou-market
+   firebase init hosting
+   ```
+
+
+---
+
+## 3. Deploy ke Firebase Hosting
+   ```bash
+   firebase deploy
+   ```
+
+---
+
+## 📱 Progressive Web App (PWA)
+
+- Sudah terintegrasi `manifest.json`, `service-worker.js`, dan splash screen
+- Dapat diinstal sebagai aplikasi dari browser mobile
+- Dapat berjalan secara offline (mode terbatas)
+
+---
+
+## 🧙‍♀️ Kredit
+
+Desain dan sistem oleh Kazue Kurosaki, terinspirasi oleh otaku culture dan dimensi chunibyou.  
+Dibantu oleh saklar, dan mantra 🌙
+
+---
+
+> Untuk dokumentasi dan penyesuaian lanjut, kunjungi halaman dashboard atau Firestore console.
