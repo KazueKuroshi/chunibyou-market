@@ -1,6 +1,6 @@
 let keranjang = [];
 
-// Ambil produk dari Firebase Realtime Database
+// 🌟 Ambil produk dari Firebase Realtime Database
 db.ref('produk').on('value', snapshot => {
   const data = snapshot.val() || {};
   const produkArray = Object.entries(data).map(([id, p]) => ({ ...p, id }));
@@ -10,7 +10,6 @@ db.ref('produk').on('value', snapshot => {
   updateKeranjang();
 });
 
-// Tampilkan produk di halaman
 function tampilkanProduk(data) {
   const container = document.getElementById('produk-container');
   container.innerHTML = '';
@@ -27,7 +26,6 @@ function tampilkanProduk(data) {
   });
 }
 
-// Tambahkan ke keranjang
 function tambahKeKeranjang(index) {
   const item = window.produkList[index];
   keranjang.push(item);
@@ -49,7 +47,6 @@ function updateKeranjang() {
   totalEl.textContent = 'Rp' + total.toLocaleString();
 }
 
-// Simpan di localStorage
 function simpanKeranjang() {
   localStorage.setItem('keranjangHikari', JSON.stringify(keranjang));
 }
@@ -58,7 +55,7 @@ function ambilKeranjang() {
   if (data) keranjang = JSON.parse(data);
 }
 
-// Checkout
+// 📩 Checkout via WhatsApp
 function checkout() {
   const nama = document.getElementById('nama').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -87,8 +84,10 @@ function checkout() {
     });
   });
 
-  // Kirim ke WhatsApp
-  const pesan = keranjang.map((item, i) => `${i + 1}. ${item.nama} - Rp${item.harga.toLocaleString()}`).join('\n');
+  const pesan = keranjang.map((item, i) =>
+    `${i + 1}. ${item.nama} - Rp${item.harga.toLocaleString()}`
+  ).join('\n');
+
   const teksWA = `🧾 *Pesanan dari Chunibyou Market*\n👤 ${nama}\n📧 ${email}\n\n${pesan}\n\n💰 Total: Rp${pesanan.total.toLocaleString()}`;
   window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(teksWA)}`, '_blank');
 
