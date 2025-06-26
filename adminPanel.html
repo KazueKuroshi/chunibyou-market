@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel Admin | Chunibyou Market</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="firebaseConfig.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d001a;
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+    }
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 95%;
+      max-width: 800px;
+    }
+    th, td {
+      padding: 0.6rem;
+      border-bottom: 1px solid #444;
+    }
+    select, button {
+      padding: 0.3rem 0.5rem;
+      border-radius: 5px;
+    }
+    #pesan {
+      margin-top: 1rem;
+      font-style: italic;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎖️ Panel Manajemen Admin</h2>
+  <div id="pesan">Memuat daftar admin...</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>UID</th>
+        <th>Peran</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="daftarAdmin"></tbody>
+  </table>
+
+  <script>
+    const firestore = firebase.firestore();
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        alert("Silakan login terlebih dahulu.");
+        location.href = "login.html";
+        return;
+      }
+      user.getIdTokenResult().then(token => {
+        if (token.claims.role !== "superadmin") {
+          alert("⚠️ Hanya SuperAdmin yang boleh mengakses halaman ini.");
+          location.href = "dashboard.html";
+          return;
+        }
+        muatDaftarAdmin(user.uid);
+      });
+    });
+
+    function muatDaftarAdmin(uidAktif) {
+      const body = document.getElementById('daftarAdmin');
+      const pesan = document.getElementById('pesan');
+
+      firestore.collection("admin").get().then(snapshot => {
+        body.innerHTML = '';
+        pesan.textContent = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const disabledHapus = doc.id === uidAktif ? "disabled" : "";
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${data.email}</td>
+            <td>${doc.id}</td>
+            <td>
+              <select onchange="ubahRole('${doc.id}', this.value)">
+                <option ${data.role === "viewer" ? "selected" : ""}>viewer</option>
+                <option ${data.role === "moderator" ? "selected" : ""}>moderator</option>
+                <option ${data.role === "superadmin" ? "selected" : ""}>superadmin</option>
+              </select>
+            </td>
+            <td>
+              <button onclick="hapusAdmin('${doc.id}')" ${disabledHapus}>🗑️ Hapus</button>
+            </td>
+          `;
+          body.appendChild(row);
+        });
+      });
+    }
+
+    function ubahRole(uid, peranBaru) {
+      firestore.collection("admin").doc(uid).update({ role: peranBaru });
+      firestore.collection("logAktivitas").add({
+        aksi: `Ubah role ${uid} → ${peranBaru}`,
+        waktu: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      alert("✅ Peran berhasil diubah.");
+    }
+
+    function hapusAdmin(uid) {
+      if (!confirm("Yakin ingin menghapus admin ini?")) return;
+      firestore.collection("admin").doc(uid).delete();
+      firestore.collection("logAktivitas").add({
+        aksi: `Menghapus admin UID:${uid}`,
+        waktu: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      alert("🗑️ Admin dihapus.");
+      muatDaftarAdmin(firebase.auth().currentUser.uid);
+    }
+  </script>
+</body>
+</html>
