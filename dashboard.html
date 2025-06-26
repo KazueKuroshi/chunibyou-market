@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <title>Dashboard Admin | Chunibyou Market</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
 
   <!-- Firebase SDK & Chart.js -->
   <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
