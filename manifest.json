@@ -1,0 +1,16 @@
+{
+  "name": "Chunibyou Market",
+  "short_name": "CMarket",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a0033",
+  "theme_color": "#ff33cc",
+  "description": "Pasar dimensi bergaya otaku dengan sihir checkout dan antarmuka dramatis!",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}
