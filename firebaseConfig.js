@@ -8,5 +8,9 @@ const firebaseConfig = {
   appId: "1:250359580310:web:3984eddab05c5bad5fe4b7"
 };
 
+// 🔥 Inisialisasi Firebase App
 firebase.initializeApp(firebaseConfig);
+
+// 🌐 Inisialisasi Database dan Firestore
 const db = firebase.database();
+const firestore = firebase.firestore();
