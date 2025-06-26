@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Memanggil Dimensi...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: radial-gradient(circle at center, #1a0033, #000);
+      color: #fff;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .sigil {
+      font-size: 3rem;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #ff33cc; }
+      to { text-shadow: 0 0 20px #fff, 0 0 40px #ff00ff; }
+    }
+    .loading {
+      margin-top: 1rem;
+      font-style: italic;
+      font-size: 1.1rem;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sigil">🪄 Memanggil Segel Cahaya 「光」...</div>
+  <div class="loading">Menembus batas dimensi...</div>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2500); // Lanjut otomatis setelah 2.5 detik
+  </script>
+</body>
+</html>
