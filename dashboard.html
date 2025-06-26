@@ -5,7 +5,7 @@
   <title>Dashboard Admin | Chunibyou Market</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDK & Chart.js -->
   <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
@@ -51,48 +51,33 @@
       top: 15px;
       left: 15px;
     }
-    #statusRole {
-      margin-top: 10px;
-      font-style: italic;
-      color: #aaa;
-    }
   </style>
 </head>
 <body>
   <h1>🧙‍♀️ Dashboard Admin Chunibyou Market</h1>
 
   <button id="logout" onclick="logout()">🚪 Logout</button>
-  <div id="statusRole">🎖️ Role: <em>mendeteksi...</em></div>
 
   <h2>🛍️ Tambah Produk</h2>
   <input id="namaProduk" placeholder="Nama Produk" />
   <textarea id="deskripsiProduk" placeholder="Deskripsi"></textarea>
   <input id="hargaProduk" type="number" placeholder="Harga (angka saja)" />
   <br />
-  <button id="btnSimpan" onclick="simpanProduk()">Simpan Produk</button>
+  <button onclick="simpanProduk()">Simpan Produk</button>
 
   <ul id="listProduk"></ul>
 
   <h2>📈 Statistik Penjualan</h2>
   <canvas id="grafikPenjualan" height="200"></canvas>
   <br />
-  <button id="unduhCSV" onclick="unduhCSV()">📥 Unduh Laporan CSV</button>
+  <button onclick="unduhCSV()">📥 Unduh Laporan CSV</button>
 
   <script>
-    let ROLE = "viewer";
-
+    // Proteksi autentikasi
     firebase.auth().onAuthStateChanged(user => {
       if (!user || !user.emailVerified || sessionStorage.getItem("adminAktif") !== "true") {
-        alert("⚠️ Akses ditolak.");
+        alert("⚠️ Akses ditolak. Silakan login dan verifikasi email terlebih dahulu.");
         window.location.href = "login.html";
-      } else {
-        user.getIdTokenResult().then(token => {
-          ROLE = token.claims.role || "viewer";
-          document.getElementById("statusRole").innerText = "🎖️ Role: " + ROLE;
-          aturAksesFitur();
-          muatProduk();
-          muatStatistik();
-        });
       }
     });
 
@@ -113,49 +98,42 @@
       document.getElementById('hargaProduk').value = '';
     }
 
-    function muatProduk() {
-      dbRef.child('produk').on('value', snapshot => {
-        const data = snapshot.val() || {};
-        const list = document.getElementById('listProduk');
-        list.innerHTML = '';
-        for (let id in data) {
-          const p = data[id];
-          const li = document.createElement('li');
-          li.innerHTML = `
-            <strong>${p.nama}</strong> - Rp${p.harga.toLocaleString()}<br/>
-            ${p.deskripsi}<br/>
-            <button onclick="hapusProduk('${id}')" ${ROLE === "superadmin" ? "" : "disabled"}>🗑️ Hapus</button>
-          `;
-          list.appendChild(li);
-        }
-      });
-    }
+    dbRef.child('produk').on('value', snapshot => {
+      const data = snapshot.val() || {};
+      const list = document.getElementById('listProduk');
+      list.innerHTML = '';
+      for (let id in data) {
+        const p = data[id];
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <strong>${p.nama}</strong> - Rp${p.harga.toLocaleString()}<br/>
+          ${p.deskripsi}<br/>
+          <button onclick="hapusProduk('${id}')">🗑️ Hapus</button>`;
+        list.appendChild(li);
+      }
+    });
 
     function hapusProduk(id) {
-      if (ROLE !== "superadmin") return;
       if (confirm("Hapus produk ini?")) {
         dbRef.child('produk/' + id).remove();
       }
     }
 
-    function muatStatistik() {
-      const ctx = document.getElementById('grafikPenjualan').getContext('2d');
-      const chart = new Chart(ctx, {
-        type: 'bar',
-        data: { labels: [], datasets: [{ label: 'Penjualan', data: [], backgroundColor: '#cc33ff' }] },
-        options: { scales: { y: { beginAtZero: true } } }
-      });
+    const ctx = document.getElementById('grafikPenjualan').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: [], datasets: [{ label: 'Penjualan', data: [], backgroundColor: '#cc33ff' }] },
+      options: { scales: { y: { beginAtZero: true } } }
+    });
 
-      dbRef.child('penjualan').on('value', snap => {
-        const data = snap.val() || {};
-        chart.data.labels = Object.keys(data);
-        chart.data.datasets[0].data = Object.values(data);
-        chart.update();
-      });
-    }
+    dbRef.child('penjualan').on('value', snap => {
+      const data = snap.val() || {};
+      chart.data.labels = Object.keys(data);
+      chart.data.datasets[0].data = Object.values(data);
+      chart.update();
+    });
 
     function unduhCSV() {
-      if (ROLE !== "superadmin") return;
       dbRef.child('pesanan').once('value').then(snapshot => {
         const data = snapshot.val();
         let csv = "Nama,Email,Produk,Total,Waktu\n";
@@ -177,23 +155,6 @@
         sessionStorage.removeItem("adminAktif");
         window.location.href = "login.html";
       });
-    }
-
-    function aturAksesFitur() {
-      if (ROLE === "moderator") {
-        document.getElementById('btnSimpan').disabled = true;
-      } else if (ROLE === "viewer") {
-        ['namaProduk', 'deskripsiProduk', 'hargaProduk'].forEach(id => {
-          document.getElementById(id).disabled = true;
-        });
-        document.getElementById('btnSimpan').disabled = true;
-        document.querySelectorAll('#listProduk button').forEach(btn => btn.disabled = true);
-        document.getElementById('unduhCSV').style.display = 'none';
-      }
-
-      if (ROLE !== "superadmin") {
-        document.getElementById('unduhCSV').style.display = 'none';
-      }
     }
   </script>
 </body>
