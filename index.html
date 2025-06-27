@@ -4,52 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chunibyou Market</title>
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-  }
-</script>
-
-  <!-- Firebase SDK -->
+  <link rel="icon" href="favicon.svg" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
   <script src="firebaseConfig.js"></script>
 </head>
 <body>
-
-  <!-- 🌟 Logo -->
   <header>
-    <h1 class="logo">✨ Chunibyou Market ✨</h1>
+    <h1>✨ Chunibyou Market</h1>
+    <p>Pasar dimensi untuk para kolektor otaku dan penyihir belanja 🎩</p>
   </header>
 
-  <!-- 🌘 Toggle Mode -->
-  <button id="toggleMode">🌙 Ganti Mode</button>
-  <canvas id="bintangCanvas"></canvas>
+  <!-- 🔮 Daftar Produk -->
+  <section id="produkContainer">
+    <h2>🧺 Produk Terbaru</h2>
+    <div id="produkList">Memuat produk...</div>
+  </section>
 
-  <!-- 🧺 Daftar Produk -->
-  <div id="produk-container"></div>
+  <!-- 🎯 Filter Tag -->
+  <section id="tagFilter">
+    <h2>🎴 Filter Berdasarkan Tag</h2>
+    <button onclick="filterTag('all')">🔥 Semua</button>
+    <button onclick="filterTag('dark')">🌑 Dark</button>
+    <button onclick="filterTag('gacha')">🎰 Gacha</button>
+    <button onclick="filterTag('limited')">⛔ Limited</button>
+  </section>
 
-  <!-- 🛒 Keranjang Belanja -->
-  <div id="keranjang">
-    <h2>Keranjang Belanja</h2>
-    <ul id="list-keranjang"></ul>
-    <p>Total: <span id="total">Rp0</span></p>
-  </div>
+  <!-- 📣 Interaksi Komunitas -->
+  <section id="dimensi-interaktif">
+    <h2>🗳️ Polling Komunitas</h2>
+    <div id="polling-blok">Memuat polling...</div>
 
-  <!-- 📩 Checkout Form -->
-  <div id="checkout">
-    <h3>Checkout via WhatsApp</h3>
-    <input type="text" id="nama" placeholder="Nama Penyihir" />
-    <input type="email" id="email" placeholder="Email Dimensi" />
-    <button onclick="checkout()">Kirim Pesanan</button>
-    <div id="notifikasi"></div>
-  </div>
+    <h2>💬 Komentar Terbaru</h2>
+    <div id="komentar-blok">Memuat komentar...</div>
 
-  <!-- 🔮 Script Utama -->
+    <h2>🏅 Admin Aktif Berlencana</h2>
+    <div id="badge-blok">Memuat data badge...</div>
+
+    <h2>📊 Grafik Produk Terlaris</h2>
+    <canvas id="grafikTerlaris" height="180"></canvas>
+
+    <h2>📜 Timeline Dimensi</h2>
+    <ul id="timeline-blok">
+      <li>Memuat catatan rilisan...</li>
+    </ul>
+  </section>
+
   <script src="script.js"></script>
+  <script>
+  // 🌠 Service Worker Registration (PWA)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('✅ Service Worker terdaftar!'))
+      .catch(err => console.error('❌ SW gagal:', err));
+  }
+
+  // 🧩 Daftar produk dummy (jika tidak pakai database langsung)
+  window.produkList = [
+    {
+      id: "prod1",
+      nama: "Segel Cahaya 『光の紋章』",
+      harga: 25000,
+      tag: ["dark", "limited"],
+      img: "assets/segel.svg"
+    },
+    {
+      id: "prod2",
+      nama: "Cincin Voidshade",
+      harga: 32000,
+      tag: ["dark", "gacha"],
+      img: "assets/cincin.svg"
+    },
+    {
+      id: "prod3",
+      nama: "Eliksir Reinkarnasi (x3)",
+      harga: 18000,
+      tag: ["gacha"],
+      img: "assets/eliksir.svg"
+    }
+  ];
+
+  // 🔮 Render produk
+  function tampilkanProduk(data) {
+    const list = document.getElementById('produkList');
+    list.innerHTML = data.map(p => `
+      <div class="produk-item">
+        <img src="${p.img}" width="80" />
+        <h4>${p.nama}</h4>
+        <p>Rp ${p.harga.toLocaleString()}</p>
+        <small>Tag: ${p.tag.join(', ')}</small>
+      </div>
+    `).join('');
+  }
+
+  // 🌟 Inisialisasi saat halaman siap
+  window.addEventListener('DOMContentLoaded', () => {
+    tampilkanProduk(window.produkList); // Bisa diganti dengan DB realtime
+  });
+</script>
 </body>
 </html>
