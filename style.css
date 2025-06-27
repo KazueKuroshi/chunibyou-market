@@ -1,4 +1,4 @@
-/* 🌌 Gaya Umum */
+/* 🌌 Tema Umum */
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
@@ -9,19 +9,17 @@ body {
   overflow-x: hidden;
 }
 
+/* 🔖 Header & Logo */
 header {
   background: #9d00ff;
   padding: 1.5rem;
   box-shadow: 0 0 15px #fff;
 }
-
-/* ✨ Logo Animasi */
 .logo {
   font-family: 'Cinzel Decorative', cursive;
   font-size: 2.2rem;
   animation: glowLogo 3s ease-in-out infinite alternate;
 }
-
 @keyframes glowLogo {
   from { text-shadow: 0 0 5px #fff, 0 0 10px #ff99ff; }
   to { text-shadow: 0 0 10px #ffffff, 0 0 20px #ff00ff, 0 0 30px #cc00cc; }
@@ -43,7 +41,7 @@ header {
   box-shadow: 0 0 10px #fff;
 }
 
-/* ⭐ Latar Bintang */
+/* 🌠 Latar Bintang */
 #bintangCanvas {
   position: fixed;
   top: 0;
@@ -56,7 +54,7 @@ header {
 }
 
 /* 🧺 Daftar Produk */
-#produk-container {
+#produk-container, #produkList {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -64,43 +62,44 @@ header {
   margin: 2rem auto;
   padding: 0 1rem;
 }
-
-.produk {
+.produk, .produk-item {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid #ffccff;
   border-radius: 10px;
   padding: 1rem;
-  max-width: 320px;
+  max-width: 300px;
   width: 100%;
   box-shadow: 0 0 10px #cc33ff88;
   backdrop-filter: blur(4px);
 }
-
-/* 📩 Form & Tombol */
-input, textarea {
-  width: 100%;
-  padding: 0.7rem;
-  margin: 0.5rem 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  font-size: 1rem;
+.produk img, .produk-item img {
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+}
+.produk small {
+  color: #ccc;
 }
 
-button {
-  background: #33cc99;
-  color: white;
+/* 🎯 Filter Tag */
+#tagFilter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+#tagFilter button {
+  background: #330055;
+  color: #fff;
   border: none;
-  padding: 0.6rem 1.2rem;
-  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 0 5px #33cc99aa;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  box-shadow: 0 0 6px #cc00ff88;
 }
-
-button:hover {
-  background: #29b386;
+#tagFilter button:hover {
+  background: #550088;
 }
 
 /* 🛒 Keranjang */
@@ -114,15 +113,38 @@ button:hover {
   color: #ffccff;
   box-shadow: 0 0 20px #ff00ffaa;
 }
-
 #list-keranjang {
   list-style: none;
   padding: 0;
 }
-
 #list-keranjang li {
   margin-bottom: 0.5rem;
   list-style: '🛒 ';
+}
+
+/* 📩 Form & Tombol */
+input, textarea, select {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+button {
+  background: #33cc99;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  margin-top: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 5px #33cc99aa;
+  font-size: 1rem;
+}
+button:hover {
+  background: #29b386;
 }
 
 /* 🚀 Checkout */
@@ -136,7 +158,6 @@ button:hover {
   color: #fcefff;
   box-shadow: 0 0 25px #8800ff99, inset 0 0 15px #aa00ff66;
 }
-
 #notifikasi {
   margin-top: 1rem;
   font-style: italic;
@@ -144,30 +165,54 @@ button:hover {
   text-shadow: 0 0 3px #fff;
 }
 
-/* 🌑 Dark Mode */
-body.dark-mode {
-  background: #000011;
-  color: #d0baff;
+/* 💬 Komentar */
+#komentar-blok p {
+  background: #26003d;
+  padding: 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+  font-style: italic;
+  border-left: 4px solid #cc00cc;
 }
 
-body.dark-mode .produk,
-body.dark-mode #keranjang,
-body.dark-mode #checkout {
-  background: rgba(255, 255, 255, 0.05);
+/* 🏅 Badge Admin */
+#badge-blok p {
+  font-size: 0.9rem;
+  color: #f0ccff;
+  margin: 0.3rem 0;
+}
+
+/* 📊 Grafik Chart */
+#grafikTerlaris {
+  background: #fff;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+/* 📜 Timeline */
+#timeline-blok {
+  padding-left: 1rem;
+}
+#timeline-blok li {
+  list-style-type: "📅 ";
+  color: #e0ccff;
+  margin-bottom: 0.4rem;
 }
 
 /* 📱 Responsif */
-@media (max-width: 500px) {
+@media screen and (max-width: 600px) {
   .logo {
     font-size: 1.5rem;
   }
-
   #toggleMode {
     font-size: 0.75rem;
     padding: 0.4rem 0.8rem;
   }
-
-  .produk, #keranjang, #checkout {
+  .produk,
+  .produk-item,
+  #keranjang,
+  #checkout {
     width: 95%;
+    margin: 1rem auto;
   }
 }
